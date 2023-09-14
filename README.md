@@ -165,7 +165,7 @@ int __fastcall main(int argc, const char **argv, const char **envp)
 ```
 
 # 分析
-從上述的pseudocode 可以看出該惡意程式的運作大致能分為以下步驟
+從上述的 pseudocode 可以看出該惡意程式的運作大致能分為以下步驟
 1. **初始化：**
   * 該程序修改命令行參數 `*argv` 以指向內存地址 ( &unk_40F17D)。
   * 然後它調用`prctl`來設置calling process的名稱。這可能是試圖掩蓋其在process list中的存在。
@@ -187,6 +187,15 @@ int __fastcall main(int argc, const char **argv, const char **envp)
 7. **清理 : **
   * 如果與服務器的連接丟失或發生錯誤，子進程會休眠 5 秒，然後嘗試重新連接。
 
+# 細節分析
+對著原本 pseudocode 中的`initConnection()`點兩下，即可看到該子程式的 pseudocode 
+
+![Image text](https://github.com/Potassium-chromate/COMPUTER-PROJECT-DESIGN/blob/main/picture/initConnection_%E7%B4%B0%E7%AF%80.png)
+此時可一窺其運作細節，此時可看到其中有個名為commServer的可疑數組
+
+![Image text](https://github.com/Potassium-chromate/COMPUTER-PROJECT-DESIGN/blob/main/picture/commServer_%E7%B4%B0%E7%AF%80.png)
+
+可以發現攻擊者的ip是 `45.56.96.91:23`
 
 
 
