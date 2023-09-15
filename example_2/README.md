@@ -1,21 +1,23 @@
-# COMPUTER-PROJECT-DESIGN
+![image](https://github.com/Potassium-chromate/COMPUTER-PROJECT-DESIGN/assets/112847018/990f2a1e-fb86-4687-984f-61e6fd8fa2d4)# COMPUTER-PROJECT-DESIGN
 COMPUTER PROJECT DESIGN
 
 # 簡介
 IDA Pro 是一款功能強大的反組譯器和除錯器，廣泛用於軟體逆向工程。它不僅是專業逆向工程師的首選工具，還被許多安全研究人員和惡意軟體分析師所青睞。以下是對 IDA Pro 主要功能的詳細介紹：
 * **多平台支持：** IDA Pro 支持多種操作系統，包括 Windows、macOS 和 Linux。此外，它還能分析多種不同的二進制檔案格式，如 PE、ELF 和 Mach-O。
 * **高度互動的使用者介面：** 使用者可以輕鬆地在圖形和文字模式之間切換，並使用豐富的視覺化工具來分析複雜的二進制檔案。
+*  **樣本資料:**
+    + sha256: 0b2a20aa35ad78f835614ae31a25b50c646aeb7bc7df3699b9b0d7c235cb8a22 
+    + 64 bit 
+    + elf 
 
 # 使用步驟
-* 將要分析的ELF檔用IDA Pro開啟會看到如下圖的架構圖
+* 將要分析的ELF檔用IDA Pro開啟會看到如下圖的架構圖，跟example_1比起來稍有不同
 
-![Image text](https://github.com/Potassium-chromate/COMPUTER-PROJECT-DESIGN/blob/main/picture/%E6%9E%B6%E6%A7%8B%E5%9C%96.png)
-* 細看能發現上面佈滿密密麻麻的組合語言
-  
-![Image text](https://github.com/Potassium-chromate/COMPUTER-PROJECT-DESIGN/blob/main/picture/%E6%9E%B6%E6%A7%8B%E5%9C%96_%E7%B4%B0%E7%AF%80.png)
+![Image text](https://github.com/Potassium-chromate/COMPUTER-PROJECT-DESIGN/blob/main/picture/example_2%E6%9E%B6%E6%A7%8B%E5%9C%96.png)
+
 * 按下F5後IDA Pro會自動反編譯成pseudocode 
 
-![Image text](https://github.com/Potassium-chromate/COMPUTER-PROJECT-DESIGN/blob/main/picture/%E5%8F%8D%E7%B7%A8%E8%AD%AF%E8%99%9B%E6%93%AC%E7%A2%BC.png)
+![Image text](https://github.com/Potassium-chromate/COMPUTER-PROJECT-DESIGN/blob/main/picture/example_2%E6%9E%B6%E6%A7%8B%E5%9C%96_%E7%B4%B0%E7%AF%80.png)
 
 * 反編譯後的pseudocode 如下
 ```
@@ -168,25 +170,22 @@ int __fastcall __noreturn main(int argc, const char **argv, const char **envp)
 # 分析
 從上述的 pseudocode 可以看出該惡意程式的運作大致能分為以下步驟
 1. **初始化：**
-  * 該程序修改命令行參數 `*argv` 以指向內存地址 ( &unk_40F17D)。
-  * 然後它調用`prctl`來設置calling process的名稱。這可能是試圖掩蓋其在process list中的存在。
-2. **隨機種子生成：**
-  * `srandom`該程序使用從當前時間和進程 ID 派生的值作為隨機數生成器 ( ) 的種子。這可能用於稍後在程序中生成隨機值。
-3. **進程分叉：**
-  * 該程序分叉兩次。這是守護進程用來將自身與終端分離並在後台運行的常用技術。父進程退出，子進程繼續運行。
-4. **設置環境：**
-  * 程序將其工作目錄更改為根目錄 `chdir("/")`。
-  * `setuid(0)`它嘗試通過將其用戶 ID 設置為 root來提升其權限。
-  * 它為信號設置一個信號處理程序`SIGPIPE`以忽略它。這可以防止程序在寫入另一端已關閉的套接字時終止。
-5. **主程式 :**
-  * 程序進入一個循環，不斷分叉。子進程嘗試初始化連接 `initConnection()`。如果成功，它會檢索系統信息，例如字節序和構建類型(`getEndianness()`和`getBuild()`)，並將該信息發送到遠程服務器。
-  * 然後程序進入另一個循環，等待來自遠程服務器的命令。這些命令被讀入`v13`緩衝區。
-  * 如果收到命令，它會檢查特定字符串，例如“ICMP”和“DUP”。如果收到“DUP”，則程序終止，這可能是來自服務器的終止命令。
-  * 如果命令以感嘆號 ( !) 開頭，則會標記該命令並使用 對其進行處理`processCmd()`。這表明該惡意軟件支持遠程服務器可以發出的一系列命令。
-6. **命令處理：**
-  * 程序將接收到的命令標記化並對其進行處理。從所提供的代碼中尚不清楚這些命令的確切性質，但它們可能是機器人可以執行的惡意操作。
-7. **清理 : **
-  * 如果與服務器的連接丟失或發生錯誤，子進程會休眠 5 秒，然後嘗試重新連接。
+  * 惡意軟件檢查/usr/bin/python系統上是否存在。如果不存在，則設置``v20``為/usr/sbin/dropbear，否則設置``v20`為sshd。
+  * 它檢查有效用戶 ID 是否為 ``root (0)``。如果是，則將 設為``userID0``。
+  *  它使用``strncpy``和``sprintf``將 process 的名稱修改為``sshd``或是 ``usr/sbin/dropbear``。
+  *  調用該``prctl``函數來設置 process 的名稱，使其更難以在 process list 中檢測到。
+2. **Watchdog：**
+  * 它調用``watchdog_maintain()``，由於無法反編譯該副程式，目前只能推測這是一個確保惡意程式繼續運行並且不被終止的函數。
+3. **Forking:：**
+  * 該程序將自身分叉兩次。這是daemon和惡意程式用來將自身與終端分離並在後台運行的常用技術。其操作是將parent processes退出，child processes繼續運行。
+4. **主程式：**
+  * 該惡意軟件嘗試使用 建立連接``initConnection()``。如果失敗，則會等待 5 秒，然後重試。
+  * 它開始利用``getBuild()``來收集有關受感染計算機的一些信息。
+  * 然後，它使用``sockprintf()``將該信息（特別是X86架構）發送到遠程服務器。
+  * 惡意軟件等待來自遠程服務器的命令。當收到命令時，它使用``processCmd()``處理該命令。
+5. **Child process管理：**
+  * 惡意軟件會跟踪它產生的 child process （可能用於執行命令）。它定期檢查這些子進程是否已退出並清理其資源。
+
 
 # 細節分析
 對著原本 pseudocode 中的`initConnection()`點兩下，即可看到該子程式的 pseudocode 
