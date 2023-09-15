@@ -172,7 +172,7 @@ int __fastcall __noreturn main(int argc, const char **argv, const char **envp)
   *  它使用``strncpy``和``sprintf``將 process 的名稱修改為``sshd``或是 ``usr/sbin/dropbear``。
   *  調用該``prctl``函數來設置 process 的名稱，使其更難以在 process list 中檢測到。
 2. **Watchdog：**
-  * 它調用``watchdog_maintain()``，由於無法反編譯該副程式，目前只能推測這是一個確保惡意程式繼續運行並且不被終止的函數。
+  * 它調用``watchdog_maintain()``，由於無法反編譯該副程式，這是一個確保惡意程式繼續運行並且不被終止的函數。
 3. **Forking:：**
   * 該程序將自身分叉兩次。這是daemon和惡意程式用來將自身與終端分離並在後台運行的常用技術。其操作是將parent processes退出，child processes繼續運行。
 4. **主程式：**
@@ -228,6 +228,77 @@ _BOOL8 initConnection()
 點進去後可以發現，其ip其實就是`37.49.230.128`
 
 ![Image text](https://github.com/Potassium-chromate/COMPUTER-PROJECT-DESIGN/blob/main/picture/hacks.png)
+
+## watchdog_maintain()
+```
+__int64 watchdog_maintain()
+{
+  __int64 result; // rax
+  int val; // eax
+  int v2; // edx
+  int v3; // ecx
+  int v4; // r8d
+  int v5; // r9d
+  int v6; // ecx
+  int v7; // r8d
+  int v8; // r9d
+  int v9; // eax
+  int v10; // edx
+  int v11; // ecx
+  int v12; // r8d
+  int v13; // r9d
+  int v14; // [rsp+4h] [rbp-Ch] BYREF
+  int v15; // [rsp+8h] [rbp-8h]
+  int v16; // [rsp+Ch] [rbp-4h]
+
+  watchdog_pid = fork();
+  result = (unsigned int)watchdog_pid;
+  if ( watchdog_pid <= 0 )
+  {
+    result = (unsigned int)watchdog_pid;
+    if ( watchdog_pid != -1 )
+    {
+      v14 = 1;
+      v16 = 0;
+      table_unlock_val(15LL);
+      table_unlock_val(16LL);
+      val = table_retrieve_val(15LL, 0LL);
+      v15 = open(val, 2, v2, v3, v4, v5);
+      if ( v15 != -1 || (v9 = table_retrieve_val(16LL, 0LL), v15 = open(v9, 2, v10, v11, v12, v13), v15 != -1) )
+      {
+        v16 = 1;
+        ioctl(v15, -2147199228, (unsigned int)&v14, v6, v7, v8);
+      }
+      if ( v16 )
+      {
+        while ( 1 )
+        {
+          ioctl(v15, -2147199227, 0, v6, v7, v8);
+          sleep(10LL);
+        }
+      }
+      table_lock_val(15LL);
+      table_lock_val(16LL);
+      exit(0);
+    }
+  }
+  return result;
+}
+```
+
+其運作原理大致可分為三個步驟
+1. **Forking:**
+    - 該函數首先調用fork()，這會創建一個 child process。隨後把 child process 的 ID 存儲在watchdog_pid。
+2. **Child process的運作邏輯:**
+    - 如果`watchdog_pid`為0，則表示當前代碼在child process中運行。
+    - Child process 使用`table_unlock_val()`進行一系列操作。
+    - Child process 執行完操作後，使用`table_lock_val()`鎖定表中的值，然後退出。
+3. **Parent process的運作邏輯:**
+    - 如果`watchdog_pid`大於 0，則代碼在Parent process中運行，並且該`watchdog_maintain`僅返還 child process 的 ID。
+    - 如果`watchdog_pid`d為-1，則表明操作過程中發生錯誤`fork()`，`watchdog_maintain`則不做任何進一步的操作。
+
+
+
 
 
 
