@@ -1,6 +1,3 @@
-![image](https://github.com/Potassium-chromate/COMPUTER-PROJECT-DESIGN/assets/112847018/990f2a1e-fb86-4687-984f-61e6fd8fa2d4)# COMPUTER-PROJECT-DESIGN
-COMPUTER PROJECT DESIGN
-
 # 簡介
 IDA Pro 是一款功能強大的反組譯器和除錯器，廣泛用於軟體逆向工程。它不僅是專業逆向工程師的首選工具，還被許多安全研究人員和惡意軟體分析師所青睞。以下是對 IDA Pro 主要功能的詳細介紹：
 * **多平台支持：** IDA Pro 支持多種操作系統，包括 Windows、macOS 和 Linux。此外，它還能分析多種不同的二進制檔案格式，如 PE、ELF 和 Mach-O。
