@@ -196,6 +196,7 @@ int __fastcall main(int argc, const char **argv, const char **envp)
 ![Image text](https://github.com/Potassium-chromate/COMPUTER-PROJECT-DESIGN/blob/main/picture/commServer_%E7%B4%B0%E7%AF%80.png)
 
 可以發現攻擊者的ip是 `45.56.96.91:23`
+在之後的動態分析中，我們能從 wireshark 中看到該惡意程式確實訪問了`45.56.96.91:23`，甚至還能觀察到訪問其他ip地址
 
 
 
