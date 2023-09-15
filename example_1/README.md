@@ -192,6 +192,7 @@ int __fastcall main(int argc, const char **argv, const char **envp)
   * 如果與服務器的連接丟失或發生錯誤，子進程會休眠 5 秒，然後嘗試重新連接。
 
 # 細節分析
+## initConnection()
 對著原本 pseudocode 中的`initConnection()`點兩下，即可看到該子程式的 pseudocode 
 
 ![Image text](https://github.com/Potassium-chromate/COMPUTER-PROJECT-DESIGN/blob/main/picture/initConnection_%E7%B4%B0%E7%AF%80.png)
