@@ -37,3 +37,44 @@
    - 實作 
      + 詳細結果: [結果](https://github.com/Potassium-chromate/COMPUTER-PROJECT-DESIGN/blob/main/dissertation%20implement/senior%20project.pptx)
      + 不同模型之比較: ![](https://github.com/Potassium-chromate/COMPUTER-PROJECT-DESIGN/blob/main/picture/%E4%B8%8D%E5%90%8C%E6%A8%A1%E5%9E%8B%E4%B9%8B%E6%AF%94%E8%BC%83%E7%B5%90%E6%9E%9C.png)
+
+6. 原論文參考文獻
+   -  Misha Mehra, Jay N. Paranjape and Vinay J. Ribeiro, “Improving ML Detection of 
+IoT Botnets using Comprehensive Data and Feature Sets”, 2021 13th 
+International Conference on Communication Systems & Networks (COMSNETS).
+
+      介紹: 大致與原論文相同，利用 statistic/dynamic feature 來當作訓練資料，
+      跟原論文的差別在於其並未用多種不同的機器學習演算法
+
+   -  J. Margolis, T. T. Oh, S. Jadhav, Y. H. Kim, and J. N. Kim, “An in-depth analysis of the 
+mirai botnet,” in 2017 International Conference on Software Security and 
+Assurance (ICSSA), Altoona, Pennsylvania, USA, 2017, pp. 6–12
+
+      介紹: 講解惡意軟體是如何利用系統調用，如: system()，fork()….來入侵系統。
+      並解釋惡意軟體在每一個階段要做的事情
+
+   - T. N. Phu, K. H. Dang, D. N. Quoc, N. T. Dai, and N. N. Binh, “A novel framework to 
+classify malware in mips architecture-based iot devices,” Security and 
+Communication Networks, 2019.
+
+      介紹: 本文介紹 F-Sandbox 是一種專門用來分析 elf 檔的工具，並提及其包含
+      四個部分(沙盒控制器、虛擬機、QEMU 監視器和 INetSim/PyNetSim 服務器)
+      並仔細介紹從初始化到執行的每個步驟，最後還提到該框架支援多種機器學
+      習算法來執行分類任務
+
+   - H. Nguyen, Q. Ngo, and V. Le, “Iot botnet detection approach based on psi graph 
+and dgcnn classifier,” in 2018 IEEE International Conference on Information 
+Communication and Signal Processing (ICICSP). Singapore: IEEE, 2018, pp. 118–122
+
+      介紹: 本文詳細闡述了物聯網殭屍網絡惡意軟件的特徵，並提出了一種新的
+      檢測方法。其中包含，使用 IDA Pro 生成 CFG，並生成 PSI 圖。最後再把 PSI
+      圖轉成 adjacency lists 並餵給 DGCNN 做分類。
+
+   - Safa Rkhouya, Khalid Chougdali, “Malware Detection Using a Machine-Learning 
+Based Approach,” in 2021 International Journal of Information Technology and 
+Applied Sciences.. 
+
+      介紹: 本文提到除了常見的 Signature-based malware detection 以外，還有其
+      他檢測方法，概念基本上與原論文相同，也是提取了許多標頭特徵，再利用
+      機器學習的相關演算法來分類，最後在將近 13 萬個文件中取得極高的準確
+      率
