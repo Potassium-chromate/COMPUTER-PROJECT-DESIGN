@@ -9,7 +9,7 @@ Wireshark 是一種廣泛認可和使用的開源封包分析器。它允許用�
     + elf 
 
 # 使用步驟
-* 
+* 首先先在 host kernel 上運行 wireshark 
 ![Image text](https://github.com/Potassium-chromate/COMPUTER-PROJECT-DESIGN/blob/main/picture/wireshark_setup_2.png)
 * 接著在虛擬機中執行目標惡意程式
   
