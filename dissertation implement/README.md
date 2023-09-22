@@ -1,5 +1,5 @@
 # 基本資料
-- 論文作者: 黃志翔
+- 論文作者: 黃志翔 ([原文](https://github.com/Potassium-chromate/COMPUTER-PROJECT-DESIGN/blob/main/dissertation%20implement/thesis-2023-02-03-chh-ykc-0938.pdf))
 - 指導教授: 張燕光
 - 日期: 2023/01
 
