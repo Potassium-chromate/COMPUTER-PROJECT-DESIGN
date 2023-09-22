@@ -1,5 +1,7 @@
 # 簡介
-MalwareBazaar 是一個收集和共享惡意軟件樣本的公共存儲庫。它的運作原理是，通過共享有關惡意軟件的知識，網絡安全社群可以更好地理解、預測和減輕威脅。用戶可以上傳、下載和分析樣​​本，使其成為世界各地研究人員和分析師的中心。而在本次中，我們從 MalwareBazaar 上下載1000樣本作為機器學習樣本的一部分。
+先前在[論文實作](https://github.com/Potassium-chromate/COMPUTER-PROJECT-DESIGN/tree/main/dissertation%20implement)中有提到作者使用了2778 個來自 VirusTotal 和 475 個 Linux 病毒檔案，而在那次實作中我們用改用了來自MalwareBazaar的病毒樣本。
+
+MalwareBazaar 是一個收集和共享惡意軟件樣本的公共存儲庫。它的運作原理是，通過共享有關惡意軟件的知識，網絡安全社群可以更好地理解、預測和減輕威脅。用戶可以上傳、下載和分析樣​​本，使其成為世界各地研究人員和分析師的中心。而在本次實作中，我們從 MalwareBazaar 上下載1000樣本作為機器學習樣本的一部分。
 
 ![](https://github.com/Potassium-chromate/COMPUTER-PROJECT-DESIGN/blob/main/picture/Malware_bazzar.png)
 
