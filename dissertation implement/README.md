@@ -1,11 +1,7 @@
-# Table of content
+# 基本資料
+- 論文作者: 黃志翔
+- 指導教授: 張燕光
+- 日期: 2023/01
 
-1. 論文實作
-   
-2. 資料來源
-   - [MalwareBazaar ](https://github.com/Potassium-chromate/COMPUTER-PROJECT-DESIGN/blob/main/data%20source/README.md)
-3. 靜態分析
-   - [example_1](https://github.com/Potassium-chromate/COMPUTER-PROJECT-DESIGN/tree/main/example_1/static)
-   - [example_2](https://github.com/Potassium-chromate/COMPUTER-PROJECT-DESIGN/tree/main/example_2)
-4. 動態分析
-   - [example_1](https://github.com/Potassium-chromate/COMPUTER-PROJECT-DESIGN/tree/main/example_1/dynamic)
+# 摘要 
+本文介紹了一種基於機器學習和深度學習的方法來偵測物聯網殭屍網路散佈的惡意軟體。作者使用了三種方法來訓練模型，分別是動態分析、靜態分析和圖像分析。在動態分析中，作者使用了Cuckoo Sandbox來模擬惡意軟體的執行環境，並使用Python腳本來提取特徵值。在靜態分析中，作者使用了Linux內建的指令分析可執行可鏈接文件，並使用Python腳本將所有特徵值整理成一個CSV檔案。在圖像分析中，作者將可執行可鏈接文件轉換成二維灰階圖片，並使用深度學習進行分析。在本文中，作者使用了多種機器學習和深度學習模型，包括K-最近鄰算法、決策樹、隨機森林、支持向量機、多層感知器等。
