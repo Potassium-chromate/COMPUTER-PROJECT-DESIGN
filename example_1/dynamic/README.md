@@ -12,12 +12,11 @@ Wireshark 是一種廣泛認可和使用的開源封包分析器。它允許用�
     + elf 
 
 # 使用步驟
-* 將要分析的ELF檔用IDA Pro開啟會看到如下圖的架構圖
-
-![Image text](https://github.com/Potassium-chromate/COMPUTER-PROJECT-DESIGN/blob/main/picture/%E6%9E%B6%E6%A7%8B%E5%9C%96.png)
-* 細看能發現上面佈滿密密麻麻的組合語言
+* 
+![Image text](https://github.com/Potassium-chromate/COMPUTER-PROJECT-DESIGN/blob/main/picture/wireshark_setup_1.png)
+* 接著在虛擬機中執行目標惡意程式
   
-![Image text](https://github.com/Potassium-chromate/COMPUTER-PROJECT-DESIGN/blob/main/picture/%E6%9E%B6%E6%A7%8B%E5%9C%96_%E7%B4%B0%E7%AF%80.png)
+![Image text](https://github.com/Potassium-chromate/COMPUTER-PROJECT-DESIGN/blob/main/picture/wireshark_setup_1.png)
 * 按下F5後IDA Pro會自動反編譯成pseudocode 
 
 ![Image text](https://github.com/Potassium-chromate/COMPUTER-PROJECT-DESIGN/blob/main/picture/%E5%8F%8D%E7%B7%A8%E8%AD%AF%E8%99%9B%E6%93%AC%E7%A2%BC.png)
