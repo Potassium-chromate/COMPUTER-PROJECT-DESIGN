@@ -34,4 +34,6 @@
 5. 結果
    - 論文
 ![image](https://github.com/Potassium-chromate/COMPUTER-PROJECT-DESIGN/blob/main/picture/%E8%AB%96%E6%96%87%E7%B5%90%E6%9E%9C.png)
-   - 實作
+   - 實作 
+     + 詳細結果: [結果](https://github.com/Potassium-chromate/COMPUTER-PROJECT-DESIGN/blob/main/dissertation%20implement/senior%20project.pptx)
+     + 不同模型之比較: ![](https://github.com/Potassium-chromate/COMPUTER-PROJECT-DESIGN/blob/main/picture/%E4%B8%8D%E5%90%8C%E6%A8%A1%E5%9E%8B%E4%B9%8B%E6%AF%94%E8%BC%83%E7%B5%90%E6%9E%9C.png)
