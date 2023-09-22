@@ -30,3 +30,8 @@
 | execve| read | close | ... | Size of .data Section |
 | ---- | ---- |---- |---- |---- |
 | 2| 8 | 13 | ... | 1 |
+
+5. 結果
+   - 論文
+![image](https://github.com/Potassium-chromate/COMPUTER-PROJECT-DESIGN/blob/main/picture/%E8%AB%96%E6%96%87%E7%B5%90%E6%9E%9C.png)
+   - 實作
