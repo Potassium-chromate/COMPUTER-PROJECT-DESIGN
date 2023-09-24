@@ -1,22 +1,10 @@
 # 簡介
-Wireshark 是一種廣泛認可和使用的開源封包分析器。它允許用戶捕獲和互動式瀏覽電腦網路上運行的流量。以下是對 Wireshark 主要功能的詳細介紹：
-* **即時資料擷取：** Wireshark 可以從各種網路介面擷取即時資料包資料。
-* **過濾：** 用戶可以過濾捕獲的數據，以將視野範圍縮小到感興趣的特定資料包。
-* **顏色分類：** 為了更輕鬆地分析，Wireshark 可以根據資料包的類型和狀態對資料包進行顏色分類。
+在上一篇介紹了 example_1 的動態分析，這次我們一樣是用 wireshark 來做分析
 *  **樣本資料:**
-    + sha256: 0a3f63fe58f542939154ba9633ac7d2fc18dd5efba1649af729e2c84f0920dcc 
+    + sha256: 0b2a20aa35ad78f835614ae31a25b50c646aeb7bc7df3699b9b0d7c235cb8a22
     + 64 bit 
     + elf 
 
-# 使用步驟
-* 首先先在 host kernel 上運行 wireshark 
-![Image text](https://github.com/Potassium-chromate/COMPUTER-PROJECT-DESIGN/blob/main/picture/wireshark_setup_2.png)
-* 接著在虛擬機中執行目標惡意程式
-  
-![Image text](https://github.com/Potassium-chromate/COMPUTER-PROJECT-DESIGN/blob/main/picture/wireshark_setup_1.png)
-* 在上方的搜尋欄輸入 `ip.addr == 140.116.103.33` (可以換成任何想找的ip)
-
-![Image text](https://github.com/Potassium-chromate/COMPUTER-PROJECT-DESIGN/blob/main/picture/wireshark_setup_3.png)
 
 
 # 分析
@@ -24,32 +12,34 @@ Wireshark 是一種廣泛認可和使用的開源封包分析器。它允許用�
 
 ![Image text](https://github.com/Potassium-chromate/COMPUTER-PROJECT-DESIGN/blob/main/picture/example_1_dyn_analysis_1.png)
 
-1. 在第一次允許資料傳輸中，它向`45.56.96.91`（攻擊者IP）發送了訊息，並使用了TCP的SACK選項。
-2. 第二行是因第一次傳輸失敗而進行的重傳。
-3. 第三和第四行是攻擊者對前兩次傳輸的反應。
-4. 然後14到19行是攻擊者的傳輸，它發送了建立與TLSv1.2（加密）連接所需的數據，並持續重傳成功為止。
-
+可以看到圖中不停出現`[TCP Retransmission] 55000 -> 9834`，當發送方在特定時間範圍內沒有收到其發送的資料包的確認 (ACK) 時，通常會發生這種情況，導致發送方認為資料包可能在傳輸過程中遺失。
 
 ![Image text](https://github.com/Potassium-chromate/COMPUTER-PROJECT-DESIGN/blob/main/picture/example_1_dyn_analysis_2.png)
 
-1. 當成功發送「應用資料」後，受感染的裝置會傳送「Client Hello」（開始建立連接，47行），它會不斷重傳直到伺服器回應連接（編號53行）。
-2. 當進行 handshake 時，連線便成功地建立了（編號56行）。
+`9834 -> 55008 [RST, ACK] Seq=1 Ack=1 Win=64240 Len=0`代表 TCP 封包從通訊埠9834發送到另一個通訊埠55008，並設定了RST（重設）和ACK（確認）信號。
 
+其中:
+- **RST（重置）：** 此信號用於重置連接。
+- **ACK（確認）：** 此信號用於確認資料包的接收。
+- **len = 0 :** 發送者沒有要傳送的 payload ，但需要通知另一方某件事，例如成功接收數據，或連接失敗。
 
 ![Image text](https://github.com/Potassium-chromate/COMPUTER-PROJECT-DESIGN/blob/main/picture/example_1_dyn_analysis_3.png)
 
-1. 在第61行中，它會更改cipher spec（建立新的連線），這樣電腦就無法偵測到裝置中存在的異常連線。這種情況會在特定的時間周期內發生，以確保其隱藏性。
+可以看到在收到 RST 訊號之後，我們的通訊埠確實改變了 (55000 變成 45400)
 
-
-![Image text](https://github.com/Potassium-chromate/COMPUTER-PROJECT-DESIGN/blob/main/picture/example_1_dyn_analysis_4.png)
 
 ![Image text](https://github.com/Potassium-chromate/COMPUTER-PROJECT-DESIGN/blob/main/picture/example_1_dyn_analysis_5.png)
 
-1. 在接下來數以千計的數據傳輸中，它會不斷地從受感染的設備中提取數據，但由於這些數據已加密，所以我們無法查看。
+1. 在接下來數以千計的數據傳輸中，他一直重複上述的步驟，不斷重新連接。
 
 # 結論
-在完成動態與靜態分析後，可以發現，要獲得一個全面且深入的病毒分析結果，兩者的結合是不可或缺的。靜態分析讓我們深入了解病毒的內部結構和程式邏輯，但它的局限性在於無法完全捕捉到病毒在執行時的動態行為。例如，我們在靜態分析中難以發現病毒如何更改cipher spec。反之，若是僅依賴動態分析，我們可能會錯過病毒的整體架構和某些隱藏的功能。
+惡意軟體經常出於各種原因嘗試與遠端伺服器建立連接，例如接收命令、竊取資料或下載額外的有效負載。如果惡意軟體連續發送`[RST, ACK]`資料包，我們猜測可能是遇到以下幾種情況：
 
-不過，靜態分析的優勢在於它能夠提供一個宏觀的視角，讓我們初步識別出攻擊者的IP。這一資訊在後續的動態分析中，特別是使用wireshark時，變得尤為重要。當面對大量的網絡數據時，已知的攻擊者IP可以幫助我們迅速鎖定與病毒相關的網絡活動，從而更有效地追踪和分析其行為。總之，動態與靜態分析各有所長，但它們的結合能夠為我們提供一個全面且深入的病毒分析視角。
-
-
+1. **連線被阻止：** 
+    惡意軟體的連線嘗試可能會被防火牆、入侵防禦系統 (IPS) 或某些其他安全機制阻止，從而導致連線重複重置時出現連續的資料包`[RST, ACK]`。
+   
+3. **Non-Responsive Server：**
+    惡意軟體嘗試連接的伺服器可能未按預期回應，有可能該伺服器被查水表而導致關閉。
+   
+5. **躲避策略 :**
+    病毒可能會檢測到它處於一個可能受到監控的虛擬機或沙盒環境中，因此它可能無法發動攻擊。因此，連續生成的[RST, ACK]封包可能是這種規避策略的一部分。
