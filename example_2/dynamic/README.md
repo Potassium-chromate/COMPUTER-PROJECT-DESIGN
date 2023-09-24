@@ -8,13 +8,9 @@
 
 
 # 分析
-我們先前已經透過IDA Pro分析出了整個病毒大致的運作流程，藉由以下的動態分析來觀察其行為是否與靜態分析的結果相同
-
-![Image text](https://github.com/Potassium-chromate/COMPUTER-PROJECT-DESIGN/blob/main/picture/example_1_dyn_analysis_1.png)
-
 可以看到圖中不停出現`[TCP Retransmission] 55000 -> 9834`，當發送方在特定時間範圍內沒有收到其發送的資料包的確認 (ACK) 時，通常會發生這種情況，導致發送方認為資料包可能在傳輸過程中遺失。
 
-![Image text](https://github.com/Potassium-chromate/COMPUTER-PROJECT-DESIGN/blob/main/picture/example_1_dyn_analysis_2.png)
+![Image text](https://github.com/Potassium-chromate/COMPUTER-PROJECT-DESIGN/blob/main/picture/example_2_dyn_analysis_2.png)
 
 `9834 -> 55008 [RST, ACK] Seq=1 Ack=1 Win=64240 Len=0`代表 TCP 封包從通訊埠9834發送到另一個通訊埠55008，並設定了RST（重設）和ACK（確認）信號。
 
@@ -23,14 +19,17 @@
 - **ACK（確認）：** 此信號用於確認資料包的接收。
 - **len = 0 :** 發送者沒有要傳送的 payload ，但需要通知另一方某件事，例如成功接收數據，或連接失敗。
 
-![Image text](https://github.com/Potassium-chromate/COMPUTER-PROJECT-DESIGN/blob/main/picture/example_1_dyn_analysis_3.png)
+![Image text](https://github.com/Potassium-chromate/COMPUTER-PROJECT-DESIGN/blob/main/picture/example_2_dyn_analysis_3.png)
 
 可以看到在收到 RST 訊號之後，我們的通訊埠確實改變了 (55000 變成 45400)
 
+![Image text](https://github.com/Potassium-chromate/COMPUTER-PROJECT-DESIGN/blob/main/picture/example_2_dyn_analysis_4.png)
 
-![Image text](https://github.com/Potassium-chromate/COMPUTER-PROJECT-DESIGN/blob/main/picture/example_1_dyn_analysis_5.png)
+在接下來數以千計的數據傳輸中，他一直重複上述的步驟，不斷重新連接。
 
-1. 在接下來數以千計的數據傳輸中，他一直重複上述的步驟，不斷重新連接。
+![Image text](https://github.com/Potassium-chromate/COMPUTER-PROJECT-DESIGN/blob/main/picture/example_2_dyn_analysis_1.png)
+
+
 
 # 結論
 惡意軟體經常出於各種原因嘗試與遠端伺服器建立連接，例如接收命令、竊取資料或下載額外的有效負載。如果惡意軟體連續發送`[RST, ACK]`資料包，我們猜測可能是遇到以下幾種情況：
