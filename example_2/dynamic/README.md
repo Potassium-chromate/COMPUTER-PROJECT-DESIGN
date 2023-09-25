@@ -8,6 +8,7 @@
 
 
 # 分析
+再先前的靜態分析中，我們已經看到攻擊者的 ip 為 `37.49.230.128` ，引此這次我們直接搜尋 `37.49.230.128`。
 可以看到圖中不停出現`[TCP Retransmission] 55000 -> 9834`，當發送方在特定時間範圍內沒有收到其發送的資料包的確認 (ACK) 時，通常會發生這種情況，導致發送方認為資料包可能在傳輸過程中遺失。
 
 ![Image text](https://github.com/Potassium-chromate/COMPUTER-PROJECT-DESIGN/blob/main/picture/example_2_dyn_analysis_2.png)
@@ -29,7 +30,9 @@
 
 ![Image text](https://github.com/Potassium-chromate/COMPUTER-PROJECT-DESIGN/blob/main/picture/example_2_dyn_analysis_1.png)
 
+最後，值得一提的是，在瀏覽整個Wireshark檔案時，我們發現攻擊者似乎也利用了`34.160.144.191`和`35.201.103.21`進行攻擊。而且，這兩個IP地址發出的封包是一模一樣的。我們目前的推測是，這可能是攻擊者在被發現後，為了確保能夠繼續保持連線而採取的策略。
 
+![Image text](https://github.com/Potassium-chromate/COMPUTER-PROJECT-DESIGN/blob/main/picture/example_2_dyn_analysis_5.png)
 
 # 結論
 惡意軟體經常出於各種原因嘗試與遠端伺服器建立連接，例如接收命令、竊取資料或下載額外的有效負載。如果惡意軟體連續發送`[RST, ACK]`資料包，我們猜測可能是遇到以下幾種情況：
