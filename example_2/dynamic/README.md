@@ -31,7 +31,8 @@
 ![Image text](https://github.com/Potassium-chromate/COMPUTER-PROJECT-DESIGN/blob/main/picture/example_2_dyn_analysis_1.png)
 
 最後，值得一提的是，在瀏覽整個Wireshark檔案時，我們發現攻擊者似乎也利用了`34.160.144.191`和`35.201.103.21`進行攻擊。而且，這兩個IP地址發出的封包是一模一樣的。我們目前的推測是，這可能是攻擊者在被發現後，為了確保能夠繼續保持連線而採取的策略。
-
+ 
+ 
 ![Image text](https://github.com/Potassium-chromate/COMPUTER-PROJECT-DESIGN/blob/main/picture/example_2_dyn_analysis_6.png)
 
 # 結論
