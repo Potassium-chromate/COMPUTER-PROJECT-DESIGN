@@ -36,7 +36,7 @@
 ![Image text](https://github.com/Potassium-chromate/COMPUTER-PROJECT-DESIGN/blob/main/picture/example_2_dyn_analysis_6.png)
 
 # 結論
-惡意軟體經常出於各種原因嘗試與遠端伺服器建立連接，例如接收命令、竊取資料或下載額外的有效負載。如果惡意軟體連續發送`[RST, ACK]`資料包，我們猜測可能是遇到以下幾種情況：
+惡意軟體經常出於各種原因嘗試與遠端伺服器建立連接，例如接收命令、竊取資料或下載額外的 payload。如果惡意軟體連續發送`[RST, ACK]`資料包，我們猜測可能是遇到以下幾種情況：
 
 1. **連線被阻止：** 
     惡意軟體的連線嘗試可能會被防火牆、入侵防禦系統 (IPS) 或某些其他安全機制阻止，從而導致連線重複重置時出現連續的資料包`[RST, ACK]`。
