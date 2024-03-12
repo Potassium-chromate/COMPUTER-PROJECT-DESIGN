@@ -1,0 +1,6 @@
+operation: attack
+DIP: 192.168.19.128
+DPORT: 9999
+times: 100000
+choise: Y
+pkt_size: 500
