@@ -1,5 +1,3 @@
-# Table of content
-
 首先，先下載limon sandbox
 ```
 git clone https://github.com/.../limon_sandbox.git
