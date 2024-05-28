@@ -38,3 +38,5 @@ done
 
 輸出的每個會長這樣，而黃框內的部分就是我們所需的靜態特徵
 ![](https://github.com/Potassium-chromate/COMPUTER-PROJECT-DESIGN/blob/main/picture/static.png)
+
+之後再想辦法用python從一千多個txt檔中把靜態特徵取出
