@@ -1,5 +1,8 @@
 # Table of content
 
+首先，先git clone以下網址
+`https://github.com/monnappa22/Limon`
+
 1. 論文實作
    - [論文實作 ](https://github.com/Potassium-chromate/COMPUTER-PROJECT-DESIGN/tree/main/dissertation%20implement)
 2. 資料來源
