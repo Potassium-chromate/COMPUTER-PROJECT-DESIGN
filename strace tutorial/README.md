@@ -28,8 +28,10 @@ done
 
 
 ```
-`Enter the file_dir`填入樣本的elf檔的資料夾。
+`Enter the file_dir`填入樣本的elf檔的資料夾。 
+
 `Enter the report_dir` 填入樣本分析報告的資料夾。
+
 ![](https://github.com/Potassium-chromate/COMPUTER-PROJECT-DESIGN/blob/main/picture/strace.png)
 
 每個樣本的分析結果會下圖
